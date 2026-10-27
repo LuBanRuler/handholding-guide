@@ -1,0 +1,56 @@
+name: 出图不对 / 报错
+description: 渲染失败、标注位置偏了、图被裁掉、字体不对
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        先自查三件事，能省一轮来回：
+        1. `GUIDE` 是否在 `annotate.js` **之前**定义？（顺序错了只有界面没有标注）
+        2. `--size` 和画布 CSS 尺寸是否一致？（不一致会裁边）
+        3. 目标元素的 `id` 是否真的存在？浏览器控制台会打印 `[annotate] 找不到目标: #xxx`
+
+  - type: textarea
+    id: what
+    attributes:
+      label: 现象
+      description: 发生了什么，和你期望的差在哪
+      placeholder: 第 2 步的红框跑到了按钮下面，标签压住了「更新」按钮
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. python scripts/new.py ./demo
+        2. 改了 steps['2'] 的 target
+        3. python scripts/render.py --steps 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: route
+    attributes:
+      label: 用的哪条路线
+      options:
+        - HTML 复刻界面
+        - 截图打底 + 空块打标
+        - 还没开始，只是提个问题
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: 环境
+      description: 系统 / Chrome 版本 / Python 版本
+      placeholder: macOS 15.2 · Chrome 131 · Python 3.13
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: 截图或日志
+      description: 直接把渲染出来的图拖进来最快

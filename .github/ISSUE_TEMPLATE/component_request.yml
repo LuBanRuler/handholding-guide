@@ -1,0 +1,33 @@
+name: 想要新界面组件
+description: 希望支持某个界面（Chrome 商店页 / iOS 设置 / 某个后台…）
+title: "[component] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        这个仓库的界面是「复刻」出来的，不是截屏。
+        提需求时最好附一张截图 —— 有参照才能复刻得像。
+
+  - type: input
+    id: which
+    attributes:
+      label: 哪个界面
+      placeholder: iOS 18 设置 → 通用 → VPN 与设备管理
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: 你打算用它教什么
+      description: 说明场景，我才知道该高亮哪几个元素
+      placeholder: 教同事在自己 iPhone 上装企业描述文件，他们会卡在「信任」那一步
+    validations:
+      required: true
+
+  - type: textarea
+    id: shot
+    attributes:
+      label: 截图
+      description: 直接拖进来。截图里如果有账号、邮箱、真实数据，先打码

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 先看使用说明
+    url: https://github.com/LuBanRuler/handholding-guide#quickstart
+    about: 快速开始、两条路线、常见坑都在 README 里
+  - name: 版式规则
+    url: https://github.com/LuBanRuler/handholding-guide/blob/main/references/rules.md
+    about: 出图不好看、标注别扭，多半是违反了这 10 条
