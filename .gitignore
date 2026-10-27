@@ -1,0 +1,15 @@
+# 渲染产物与本地缓存
+out/
+.chrome-profile/
+demo/out/
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# 编辑器
+.vscode/
+.idea/

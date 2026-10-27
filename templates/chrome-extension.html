@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>安装步骤</title>
+<link rel="stylesheet" href="kit/base.css" />
+<style>
+/* ============================================================
+   界面 mock 样式（Chrome 扩展程序页）
+   换产品就整段替换：这里画什么，图上就是什么
+   ============================================================ */
+.window{
+  position:absolute;left:40px;top:104px;width:1420px;height:486px;background:#fff;
+  border:1px solid #d8dbe0;border-radius:14px;
+  box-shadow:0 24px 60px -28px rgba(23,32,51,.30), 0 2px 6px rgba(23,32,51,.06);
+  display:flex;overflow:hidden;
+}
+.dots{position:absolute;left:18px;top:15px;display:flex;gap:7px;z-index:5}
+.dots i{width:11px;height:11px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:#ff5f57}
+.dots i:nth-child(2){background:#febc2e}
+.dots i:nth-child(3){background:#28c840}
+
+/* 侧栏 */
+.side{width:300px;flex:0 0 300px;border-right:1px solid #eceef1;padding:46px 20px 18px;display:flex;flex-direction:column}
+.side h2{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;color:#1f2937;line-height:22px}
+.nav{margin-top:20px;display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;height:38px;padding:0 12px;border-radius:9px;font-size:13.5px;color:var(--ink2);text-decoration:none}
+.nav a.on{background:#e8f0fe;color:var(--blue);font-weight:600}
+.promos{margin-top:auto;display:flex;flex-direction:column;gap:14px}
+.promos p{font-size:11.5px;line-height:1.7;color:var(--muted)}
+.promos a{color:var(--blue);text-decoration:none}
+.promos .store{display:flex;gap:9px;align-items:flex-start}
+.hr{height:1px;background:#f0f1f3;margin:2px 0}
+
+/* 主区域 */
+.main{flex:1;position:relative}
+.searchbar{position:absolute;left:44px;top:36px;width:470px;height:36px;border-radius:18px;background:#f1f3f4;
+  display:flex;align-items:center;gap:10px;padding:0 14px;color:#7d838b;font-size:13.5px}
+.devmode{position:absolute;right:44px;top:37px;display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink2)}
+.toolbar{position:absolute;left:44px;top:96px;display:flex;gap:10px}
+.btn{height:36px;padding:0 17px;border-radius:18px;border:1px solid #c4c7c5;background:#fff;color:var(--ink2);
+  font-size:13px;display:flex;align-items:center;gap:7px;font-family:inherit}
+.btn.primary{border-color:#a8c7fa;background:#f4f8ff;color:var(--blue);font-weight:600}
+.section{position:absolute;left:44px;top:170px;font-size:14px;font-weight:600;color:#1f2937}
+.empty{position:absolute;left:44px;top:210px;font-size:12.5px;color:#9aa0a6}
+
+/* 扩展卡片 */
+.card{position:absolute;left:44px;top:196px;width:492px;height:190px;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:16px;display:flex;gap:14px}
+.icon{position:relative;width:46px;height:46px;flex:0 0 46px;border-radius:9px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.14);
+  background:linear-gradient(145deg,#ff7a45,#e64a19);color:#fff;font-size:22px;font-weight:800;
+  display:flex;align-items:center;justify-content:center}
+.icon img{position:absolute;inset:0;z-index:2;width:100%;height:100%;object-fit:cover;display:block}
+.body{flex:1;min-width:0}
+.title-row{display:flex;align-items:baseline;gap:8px}
+.name{font-size:15px;font-weight:600;color:#1f2937}
+.ver{font-size:11.5px;color:var(--faint)}
+.desc{margin-top:6px;font-size:12px;line-height:1.65;color:var(--muted);max-width:400px}
+.meta{margin-top:6px;font-size:11.5px;color:var(--faint);line-height:1.8}
+.meta b{font-weight:400;color:#7c8288}
+.meta .link{color:var(--blue)}
+.card-foot{display:flex;align-items:center;gap:8px;margin-top:12px}
+.pill{height:28px;padding:0 14px;border-radius:14px;border:1px solid #dadce0;background:#fff;font-size:12px;color:var(--ink2);display:flex;align-items:center}
+.foot-right{margin-left:auto;display:flex;align-items:center;gap:12px;color:#5f6368}
+
+/* 开关 */
+.switch{display:inline-block;vertical-align:middle;width:40px;height:24px;border-radius:12px;background:#bdc1c6;position:relative}
+.switch i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.28);display:block}
+.switch.on{background:var(--blue)}
+.switch.on i{left:19px}
+
+/* 文件选择器 */
+.dim{position:absolute;left:40px;top:104px;width:1420px;height:486px;background:rgba(24,28,36,.30);border-radius:14px;z-index:10}
+.finder{position:absolute;left:392px;top:120px;width:716px;height:436px;background:#fff;border-radius:12px;z-index:12;
+  box-shadow:0 34px 90px -24px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.07);display:flex;flex-direction:column;overflow:hidden}
+.f-top{height:46px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid #eceef1}
+.f-top .arw{display:flex;gap:14px;color:#b6bcc4}
+.f-top .t{font-size:13px;font-weight:600;color:#1f2937;margin-left:6px}
+.f-body{flex:1;display:flex;min-height:0}
+.f-side{width:176px;border-right:1px solid #eceef1;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.f-side span{font-size:12.5px;color:#3c4043;height:28px;display:flex;align-items:center;gap:8px;padding:0 8px;border-radius:6px}
+.f-side span.on{background:#e8eaf0;font-weight:600}
+.f-main{flex:1;padding:12px 16px;position:relative}
+.crumb{font-size:12px;color:#5f6368;display:flex;align-items:center;gap:7px;margin-bottom:12px}
+.crumb b{color:#1f2937;font-weight:600}
+.flist{display:flex;flex-direction:column;gap:1px;padding:6px;border-radius:8px;background:#f7f8fa;border:1px solid #e6e8ec}
+.frow{display:flex;align-items:center;gap:9px;height:27px;font-size:12.5px;color:#3c4043;padding:0 8px;border-radius:5px}
+.frow.key{background:#fff;box-shadow:0 0 0 1px #d9dde3 inset}
+.frow.key .fn{font-weight:700;color:#1f2937}
+.f-warn{display:flex;align-items:center;gap:7px;margin-top:12px;font-size:11.5px;color:#b0492f}
+.f-foot{height:54px;display:flex;align-items:center;gap:10px;padding:0 16px;border-top:1px solid #eceef1}
+.f-foot .hint{font-size:11.5px;color:#8b9199;line-height:1.45}
+.f-btn{height:30px;min-width:76px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;border:1px solid #d0d4da;background:#fff;color:#3c4043}
+.f-btn.primary{margin-left:auto;background:#0b6cf0;border-color:#0b6cf0;color:#fff;font-weight:600;
+  box-shadow:0 6px 16px -8px rgba(11,108,240,.9)}
+.f-btn.ghost{margin-left:auto}
+
+/* ---------- 步骤状态：哪一步显示什么 ---------- */
+body:not([data-step="2"]) .dim,
+body:not([data-step="2"]) .finder{display:none}
+body:not([data-step="3"]):not([data-step="all"]) .card,
+body:not([data-step="3"]):not([data-step="all"]) .trouble{display:none}
+/* 开发者模式没开时，Chrome 不显示这一排按钮 */
+body[data-step="1"] .toolbar,
+body[data-step="1"] .empty{display:none}
+</style>
+</head>
+<body>
+<div id="canvas">
+
+  <header>
+    <h1 id="ttl"></h1>
+    <p id="sub"></p>
+  </header>
+
+  <div class="window">
+    <div class="dots"><i></i><i></i><i></i></div>
+
+    <aside class="side">
+      <h2>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4c8df6" stroke-width="1.9">
+          <path d="M9 3h4a1 1 0 0 1 1 1v1.2a2.3 2.3 0 1 0 3.4 2v-.2H21v5h-2.2a2.3 2.3 0 1 0 0 3.4H21V21h-5.2v-2.2a2.3 2.3 0 1 0-3.4 0V21H7a1 1 0 0 1-1-1v-4.6H4.8a2.3 2.3 0 1 1 0-3.4H6V4a1 1 0 0 1 1-1z" stroke-linejoin="round"/>
+        </svg>
+        扩展程序
+      </h2>
+      <nav class="nav">
+        <a href="#" class="on">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9h6v6H9z"/></svg>
+          我的扩展程序
+        </a>
+        <a href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M7 10h.01M11 10h.01M15 10h.01M8 14h8"/></svg>
+          键盘快捷键
+        </a>
+      </nav>
+      <div class="promos">
+        <p>正在开发扩展程序？请参阅<br><a href="#">Chrome 扩展程序开发者文档</a>，<br>及时了解最新动态。</p>
+        <div class="hr"></div>
+        <div class="store">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="1.8"><path d="M4 9h16l-1.4 10.2A2 2 0 0 1 16.6 21H7.4a2 2 0 0 1-2-1.8L4 9z"/><path d="M8.5 9 10 3.6M15.5 9 14 3.6"/></svg>
+          <p>在 <a href="#">Chrome 应用商店</a> 中<br>发现更多扩展程序和主题</p>
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <div class="searchbar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a9099" stroke-width="2"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+        搜索扩展程序
+      </div>
+
+      <div class="devmode">
+        <span>开发者模式</span>
+        <span id="devSwitch"><span class="switch"><i></i></span></span>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn primary" id="btnLoad">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          加载已解压的扩展程序
+        </button>
+        <button class="btn">打包扩展程序</button>
+        <button class="btn">更新</button>
+      </div>
+
+      <div class="section">所有扩展程序</div>
+      <p class="empty">还没有已加载的扩展程序。</p>
+
+      <article class="card" id="card">
+        <div class="icon"><span>长</span><img src="assets/icon128.png" alt="" onerror="this.remove()" /></div>
+        <div class="body">
+          <div class="title-row">
+            <span class="name">扩展名称</span>
+            <span class="ver">1.0.0</span>
+          </div>
+          <p class="desc">一句话说清这个扩展干什么用，别超过两行。</p>
+          <p class="meta"><b>ID：</b>abcdefghijklmnopabcdefghijklmnop<br>
+            <b>检查视图：</b><span class="link">Service Worker</span></p>
+          <div class="card-foot">
+            <span class="pill">详情</span>
+            <span class="pill">移除</span>
+            <span class="foot-right">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>
+              <span class="switch on"><i></i></span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <div class="trouble" style="left:44px;top:402px;width:492px;height:54px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c99a2e" stroke-width="2"><path d="M12 4.5 21 20H3L12 4.5z" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.4v.1"/></svg>
+        <p>报错 <b>「清单文件缺失或不可读取」</b> ＝ 文件夹选错了一层，要选到 <code>manifest.json</code> 那一层。</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- 文件选择器（只在第 2 步出现） -->
+  <div class="dim"></div>
+  <div class="finder">
+    <div class="f-top">
+      <div class="arw">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m14 6-6 6 6 6"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m10 6 6 6-6 6"/></svg>
+      </div>
+      <span class="t">打开</span>
+    </div>
+    <div class="f-body">
+      <div class="f-side">
+        <span>iCloud 云盘</span><span>最近使用</span><span>应用程序</span>
+        <span>桌面</span><span class="on">文稿</span><span>下载</span>
+      </div>
+      <div class="f-main">
+        <div class="crumb">文稿 <span>›</span> <b>你的扩展文件夹</b></div>
+        <div class="flist" id="finderTarget">
+          <div class="frow"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8ab4f8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg><span class="fn">icons</span></div>
+          <div class="frow key"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f4511e" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z" stroke-linejoin="round"/><path d="M14 3v5h5"/></svg><span class="fn">manifest.json</span></div>
+          <div class="frow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a9099" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z" stroke-linejoin="round"/></svg><span class="fn">background.js</span></div>
+          <div class="frow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a9099" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z" stroke-linejoin="round"/></svg><span class="fn">content.js</span></div>
+          <div class="frow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a9099" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z" stroke-linejoin="round"/></svg><span class="fn">popup.html</span></div>
+        </div>
+        <div class="f-warn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          上一层看不到 manifest.json —— 能看见它才算进对了
+        </div>
+      </div>
+    </div>
+    <div class="f-foot">
+      <span class="hint">Chrome 只认文件夹，<br>不要双击进 manifest.json</span>
+      <div class="f-btn ghost">取消</div>
+      <div class="f-btn primary">打开</div>
+    </div>
+  </div>
+
+  <div id="wires"></div>
+  <div id="chips"></div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+/* ============================================================
+   改这里就够了：文案 COPY / 指向 STEPS / 状态 onState
+   ============================================================ */
+window.GUIDE = {
+  copy: {
+    '1': {
+      ttl:'<span class="n">1</span>打开开发者模式',
+      sub:'Chrome 地址栏输入 <b>chrome://extensions</b> 回车，右上角这个开关打开它。',
+      foot:'<span class="tag">TIP</span><span>开关打开后，页面会多出「加载已解压的扩展程序」这一排按钮。</span>'
+    },
+    '2': {
+      ttl:'<span class="n">2</span>点按钮，选对文件夹',
+      sub:'点 <b>「加载已解压的扩展程序」</b>，在弹出的窗口里进到扩展那一层 —— 能直接看到 <b>manifest.json</b> 才算对。',
+      foot:'<span class="tag">WHY</span><span>Chrome 只认文件夹不认单个文件；选到上一层会报「清单文件缺失或不可读取」。</span>'
+    },
+    '3': {
+      ttl:'<span class="n">3</span>卡片出现就装好了',
+      sub:'看到这张卡片就成功了，不用再做别的。',
+      foot:'<span class="tag">TIP</span><span>点右上角 <b>拼图</b> 图标 → 点扩展旁边的 <b>图钉</b> 固定到工具栏。</span>'
+    },
+    'all': {
+      ttl:'把扩展装进 Chrome <em>· 3 步</em>',
+      sub:'不用去商店，本地文件夹直接装。哪一步和图上不一样，截图发我。',
+      foot:'<span class="tag">TIP</span><span>装好后点右上角 <b>拼图</b> 图标 → 点 <b>图钉</b> 固定到工具栏。</span>'
+    }
+  },
+
+  steps: {
+    '1': [
+      { target:'#devSwitch', text:'先把这个开关打开', side:'below', align:'right', gap:20 }
+    ],
+    '2': [
+      { target:'#devSwitch', text:'已打开', done:true, side:'below', align:'right', gap:16 },
+      { target:'#finderTarget', text:'看到 manifest.json 这一层，点「打开」', side:'left', gap:22 }
+    ],
+    '3': [
+      { target:'#devSwitch', text:'已打开', done:true, side:'below', align:'right', gap:16 },
+      { target:'#card', text:'出现这张卡片，就装好了', side:'right', gap:26, dy:-24, n:3 }
+    ],
+    'all': [
+      { target:'#devSwitch', text:'先打开「开发者模式」这个开关', side:'below', align:'right', gap:20 },
+      { target:'#btnLoad',   text:'再点这里，选中解压出来的文件夹', side:'right', gap:22 },
+      { target:'#card',      text:'出现这张卡片，就装好了', side:'right', gap:26, dy:-24, n:3 }
+    ]
+  },
+
+  // 界面状态：除第 1 步外，开发者模式开关都是开着的
+  onState(step){
+    if (step !== '1') document.querySelector('#devSwitch .switch').classList.add('on');
+  }
+};
+</script>
+<script src="kit/annotate.js"></script>
+</body>
+</html>

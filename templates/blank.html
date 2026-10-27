@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>操作步骤</title>
+<link rel="stylesheet" href="kit/base.css" />
+<style>
+/* ============================================================
+   空骨架：这里只有一个最简窗口。
+   把整段 .win 换成你要教的那个界面（照着真实截图复刻），
+   再改下面的 GUIDE 就行。
+   ============================================================ */
+.win{
+  position:absolute;left:40px;top:104px;width:1420px;height:486px;background:#fff;
+  border:1px solid #d8dbe0;border-radius:14px;
+  box-shadow:0 24px 60px -28px rgba(23,32,51,.30), 0 2px 6px rgba(23,32,51,.06);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.bar{height:44px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid #eceef1;background:#fafbfc}
+.dots{display:flex;gap:7px}
+.dots i{width:11px;height:11px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:#ff5f57}
+.dots i:nth-child(2){background:#febc2e}
+.dots i:nth-child(3){background:#28c840}
+.bar .t{font-size:13px;color:var(--muted)}
+.pane{flex:1;padding:28px 32px}
+.row{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.btn{height:34px;padding:0 16px;border-radius:8px;border:1px solid #c4c7c5;background:#fff;color:var(--ink2);
+  font-size:13px;display:flex;align-items:center;font-family:inherit}
+.btn.primary{background:#0b57d0;border-color:#0b57d0;color:#fff;font-weight:600}
+.switch{display:inline-block;width:40px;height:24px;border-radius:12px;background:#bdc1c6;position:relative}
+.switch i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.28);display:block}
+.switch.on{background:var(--blue)}
+.switch.on i{left:19px}
+.box{height:150px;border:1px dashed #cfd4da;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:#9aa0a6;font-size:13px;background:#fafbfc}
+</style>
+</head>
+<body>
+<div id="canvas">
+
+  <header>
+    <h1 id="ttl"></h1>
+    <p id="sub"></p>
+  </header>
+
+  <div class="win">
+    <div class="bar">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <span class="t">设置</span>
+    </div>
+    <div class="pane">
+      <div class="row">
+        <span>自动同步</span>
+        <span id="tgl"><span class="switch"><i></i></span></span>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="act">立即同步</button>
+        <button class="btn">高级设置</button>
+      </div>
+      <div class="box" id="result">（结果会出现在这里）</div>
+    </div>
+  </div>
+
+  <div id="wires"></div>
+  <div id="chips"></div>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+window.GUIDE = {
+  copy: {
+    '1': {
+      ttl:'<span class="n">1</span>先把开关打开',
+      sub:'打开 <b>自动同步</b>，否则下面的按钮点了也没反应。',
+      foot:'<span class="tag">TIP</span><span>把这里换成一句真正有用的提醒。</span>'
+    },
+    '2': {
+      ttl:'<span class="n">2</span>点这个按钮',
+      sub:'点 <b>立即同步</b>，等它跑完。',
+      foot:'<span class="tag">NOTE</span><span>失败时的样子和解决办法写在这里。</span>'
+    }
+  },
+  steps: {
+    '1': [
+      { target:'#tgl', text:'先打开这个开关', side:'right', gap:24 }
+    ],
+    '2': [
+      { target:'#tgl', text:'已打开', done:true, side:'right', gap:20 },
+      { target:'#act', text:'再点这里', side:'below', gap:18, n:2 }
+    ]
+  },
+  onState(step){
+    if (step !== '1') document.querySelector('#tgl .switch').classList.add('on');
+  }
+};
+</script>
+<script src="kit/annotate.js"></script>
+</body>
+</html>
